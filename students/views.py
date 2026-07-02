@@ -33,7 +33,7 @@ def student_create(request):
 
 def student_detail(request, pk):
     
-    student = get_object_or_404(Student, pk)
+    student = get_object_or_404(Student, pk=pk)
     
     context = {
         "student" : student
@@ -42,3 +42,27 @@ def student_detail(request, pk):
     return render(request, "students/student_detail.html", context)
 
 
+def student_update(request, pk):
+    
+    student = get_object_or_404(Student, pk=pk)
+    
+    if request.method == "POST":
+        form = StudentForm(request.POST, request.FILES, instance = student)
+        
+        if form.is_valid():
+            form.save()
+            
+            return redirect("students:student_detail",
+                            pk = student.pk)
+            
+            
+    else:
+        form = StudentForm(instance = student)
+        
+    context = {
+        "form" : form,
+        "student": student,
+    }    
+                    
+    return render(request, "students/student_form.html", context)
+                
