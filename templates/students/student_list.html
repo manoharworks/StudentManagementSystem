@@ -43,7 +43,12 @@ This is the student list.
 
 <td>{{ student.id }}</td>
 
-<td>{{ student.name }}</td>
+<td>
+  <a href="{% url 'students:student_detail' student.pk %}">
+  {{ student.name }}
+  </a> 
+   
+</td>
 
 <td>{{ student.email }}</td>
 
