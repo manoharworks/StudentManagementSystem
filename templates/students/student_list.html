@@ -4,43 +4,70 @@
 This is the student list.
 {%endblock%}
 
-{%bllock extra_css%}
-<style>
-table, th, td {
-  border:1px solid black;
-}
-</style>
-{%endblock%}
 
 {%block content%}
-<h2>Student List</h2>
+<h2 class="mb-4">Students</h2>
 
-<table style="width:100%">
-  <tr>
-    <th>id</th>
-    <th>name</th>
-    <th>email</th>
-    <th>phone</th>
-    <th>date_of_birth</th>
-    <th>gender</th>
-    <th>address</th>
-    <th>photo</th>
-  </tr>
-  {%for student in students %}
-  <tr>
-    <td>{{student.id}}</td>
-    <td>{{student.name}}</td>
-    <td>{{student.email}}</td>
-    <td>{{student.phone}}</td>
-    <td>{{student.date_of_birth}}</td>
-    <td>{{student.gender}}</td>
-    <td>{{student.address}}</td>
-    <td>{{student.photo}}</td>
-  </tr>
-  {%empty%}
-  <tr>
-    <td colspan="5">No students found.</td>
-  </tr>
-  {%endfor%}
+<a href="{% url 'students:student_create' %}"
+   class="btn btn-primary mb-3">
+
+    Add Student
+
+</a>
+
+<table class="table table-striped table-hover">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Phone</th>
+
+<th>Gender</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for student in students %}
+
+<tr>
+
+<td>{{ student.id }}</td>
+
+<td>{{ student.name }}</td>
+
+<td>{{ student.email }}</td>
+
+<td>{{ student.phone }}</td>
+
+<td>{{ student.gender }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="5">
+
+No students found.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
 </table>
 {%endblock%}

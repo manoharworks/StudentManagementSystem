@@ -9,7 +9,7 @@ def student_list(request):
         "students": students
     }
     
-    return render(request, "students/student_list.html", context)
+    return render(request, "/Users/manoharjha/django_Projects/StudentManagementSystem/templates/students/student_list.html", context)
 
 def student_create(request):
     if request.method == "POST":
@@ -27,4 +27,4 @@ def student_create(request):
         "form" : form,
     }    
     
-    return render(request, "students/student_form.html", context)
+    return render(request, "/Users/manoharjha/django_Projects/StudentManagementSystem/templates/students/student_form.html", context)
