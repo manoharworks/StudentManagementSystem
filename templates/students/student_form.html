@@ -12,15 +12,39 @@
 
     {% csrf_token %}
 
-    {{ form.as_p }}
+    {% for field in form %}
+
+        <div class="mb-3">
+
+            <label class="form-label">
+
+                {{ field.label }}
+
+            </label>
+
+            {{ field }}
+
+            {% if field.errors %}
+
+                <div class="text-danger">
+
+                    {{ field.errors }}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
 
     <button
-        type="submit"
         class="btn btn-success">
 
         Save
 
     </button>
+
 
     <a
         href="{% url 'students:student_list' %}"
@@ -28,7 +52,7 @@
 
         Cancel
 
-    </a>
+    </a>    
 
 </form>
 {%endblock%}
