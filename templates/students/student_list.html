@@ -1,78 +1,73 @@
-{%extends "base.html"%}
-
-{%block title%}
-This is the student list.
-{%endblock%}
-
-
+{%extends "base.html"%} {%block title%} This is the student list. {%endblock%}
 {%block content%}
 <h2 class="mb-4">Students</h2>
 
-<a href="{% url 'students:student_create' %}"
-   class="btn btn-primary mb-3">
-
-    Add Student
-
+<a href="{% url 'students:student_create' %}" class="btn btn-primary mb-3">
+  Add Student
 </a>
 
 <table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>ID</th>
 
-<thead>
+      <th>Name</th>
 
-<tr>
+      <th>Email</th>
 
-<th>ID</th>
+      <th>Phone</th>
 
-<th>Name</th>
+      <th>Gender</th>
 
-<th>Email</th>
+      <th>Actions</h>
+    </tr>
+  </thead>
 
-<th>Phone</th>
+  <tbody>
+    {% for student in students %}
 
-<th>Gender</th>
+    <tr>
+      <td>{{ student.id }}</td>
 
-</tr>
+      <td>{{ student.name }}</td>
 
-</thead>
+      <td>{{ student.email }}</td>
 
-<tbody>
+      <td>{{ student.phone }}</td>
 
-{% for student in students %}
+      <td>{{ student.gender }}</td>
 
-<tr>
+      <td>
+        <a
+          href="{% url 'students:student_detail' student.pk %}"
+          class="btn btn-info btn-sm"
+        >
+          View
+        </a>
 
-<td>{{ student.id }}</td>
+        <a
+          href="{% url 'students:student_update' student.pk %}"
+          class="btn btn-warning btn-sm"
+        >
+          Edit
+        </a>
 
-<td>
-  <a href="{% url 'students:student_detail' student.pk %}">
-  {{ student.name }}
-  </a> 
-   
-</td>
+        <a
+          href="{% url 'students:student_delete' student.pk %}"
+          class="btn btn-danger btn-sm"
+        >
+          Delete
+        </a>
+      </td>
+    </tr>
 
-<td>{{ student.email }}</td>
+    {% empty %}
 
-<td>{{ student.phone }}</td>
+    <tr>
+      <td colspan="5">No students found.</td>
+    </tr>
 
-<td>{{ student.gender }}</td>
-
-</tr>
-
-{% empty %}
-
-<tr>
-
-<td colspan="5">
-
-No students found.
-
-</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
+    {% endfor %}
+  </tbody>
 </table>
 {%endblock%}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Student
 from .forms import StudentForm
+from django.contrib import messages
     
     
 # Create your views here.
@@ -66,3 +67,18 @@ def student_update(request, pk):
                     
     return render(request, "students/student_form.html", context)
                 
+                
+def student_delete(request, pk):
+    
+    student = get_object_or_404(Student, pk=pk)
+    
+    if request.method == "POST":
+        
+        student.delete()
+        
+        return redirect ("students:student_list")
+    
+    context = {
+        "student": student
+    }
+    return render(request, "students/student_confirm_delete.html", context)
