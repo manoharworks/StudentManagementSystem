@@ -1,4 +1,5 @@
-{%extends "base.html"%} {%block title%} This is the student list. {%endblock%}
+{%extends "base.html"%} 
+{%block title%} This is the student list. {%endblock%}
 {%block content%}
 <h2 class="mb-4">Students</h2>
 
@@ -19,7 +20,7 @@
 
       <th>Gender</th>
 
-      <th>Actions</h>
+      <th>Actions</th>
     </tr>
   </thead>
 
@@ -64,7 +65,7 @@
     {% empty %}
 
     <tr>
-      <td colspan="5">No students found.</td>
+      <td colspan="6">No students found.</td>
     </tr>
 
     {% endfor %}
