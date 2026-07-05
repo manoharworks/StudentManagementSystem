@@ -15,10 +15,35 @@
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="{% url 'students:student_list' %}">
-          <h1>Student Management System</h1>
+      <div class="container d-flex justify-content-between align-items-center">
+        <a
+          class="navbar-brand fs-3 fw-bold"
+          href="{% url 'students:student_list' %}"
+        >
+          Student Management System
         </a>
+
+        <!-- Authentication Area (Moved inside the container) -->
+        <div>
+          {% if user.is_authenticated %}
+          <form
+            method="post"
+            action="{% url 'accounts:logout' %}"
+            class="d-inline"
+          >
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger btn-sm">
+              Logout
+            </button>
+          </form>
+          {% else %}
+          <a
+            href="{% url 'accounts:login' %}"
+            class="btn btn-outline-light btn-sm"
+            >Login</a
+          >
+          {% endif %}
+        </div>
       </div>
     </nav>
 
