@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
 LOCAL_APPS = [
     'students.apps.StudentsConfig',
+    'accounts.apps.AccountsConfig'
 ]
 
 INSTALLED_APPS += LOCAL_APPS
@@ -126,3 +127,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Redirecting the user after the logging in or out
+LOGIN_REDIRECT_URL = "students:student_list"
+LOGOUT_REDIRECT_URL = "accounts:login"

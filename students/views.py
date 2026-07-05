@@ -3,10 +3,10 @@ from .models import Student
 from .forms import StudentForm
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 
-
-# Create your views here.
+@login_required
 def student_list(request):
     
     query = request.GET.get("q")
@@ -30,7 +30,7 @@ def student_list(request):
 
     return render(request, "students/student_list.html", context)
 
-
+@login_required
 def student_create(request):
     if request.method == "POST":
         form = StudentForm(request.POST, request.FILES)
@@ -54,7 +54,7 @@ def student_create(request):
 
     return render(request, "students/student_form.html", context)
 
-
+@login_required
 def student_detail(request, pk):
 
     student = get_object_or_404(Student, pk=pk)
@@ -65,7 +65,7 @@ def student_detail(request, pk):
 
     return render(request, "students/student_detail.html", context)
 
-
+@login_required
 def student_update(request, pk):
 
     student = get_object_or_404(Student, pk=pk)
@@ -91,7 +91,7 @@ def student_update(request, pk):
 
     return render(request, "students/student_form.html", context)
 
-
+@login_required
 def student_delete(request, pk):
 
     student = get_object_or_404(Student, pk=pk)
