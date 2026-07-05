@@ -26,22 +26,27 @@
         <!-- Authentication Area (Moved inside the container) -->
         <div>
           {% if user.is_authenticated %}
-          <form
-            method="post"
-            action="{% url 'accounts:logout' %}"
-            class="d-inline"
-          >
+
+          <span class="text-white me-3"> Hello {{ user.username }} </span>
+
+          <form method="post" action="{% url 'accounts:logout' %}">
             {% csrf_token %}
-            <button type="submit" class="btn btn-outline-danger btn-sm">
-              Logout
-            </button>
+            <button class="btn btn-outline-light" type="submit">Logout</button>
           </form>
+
           {% else %}
+
           <a
+            class="btn btn-outline-light me-2"
             href="{% url 'accounts:login' %}"
-            class="btn btn-outline-light btn-sm"
-            >Login</a
           >
+            Login
+          </a>
+
+          <a class="btn btn-success" href="{% url 'accounts:signup' %}">
+            SignUp
+          </a>
+
           {% endif %}
         </div>
       </div>

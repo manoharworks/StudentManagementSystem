@@ -40,6 +40,8 @@ def custom_login_view(request):
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 def signup(request):
     if request.method == "POST":
@@ -58,3 +60,8 @@ def signup(request):
     context = {"form" : form}    
     
     return render(request, "accounts/signup.html", context )         
+
+@login_required
+def profile(request): 
+    return render(request, "accounts/profile.html")
+
