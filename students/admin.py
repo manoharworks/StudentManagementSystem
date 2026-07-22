@@ -1,12 +1,12 @@
 from django.contrib import admin
 from .models import Student
-
-# Register your models here.
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = (
         "id",
+        "roll_number",
         "name",
+        "department",
         "email",
         "phone",
         "gender",
@@ -23,5 +23,5 @@ class StudentAdmin(admin.ModelAdmin):
     )
     
     ordering = (
-        "name",
+        "roll_number", "name"
     )

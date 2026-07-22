@@ -13,9 +13,9 @@ class CustomUserCreationForm(UserCreationForm):
         
         fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'email') 
         
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         # Inject Bootstrap styling into the base username field dynamically
-            if 'username' in self.fields:
-                self.fields['username'].widget.attrs.update({'class': 'form-control'})
+        if 'username' in self.fields:
+            self.fields['username'].widget.attrs.update({'class': 'form-control'})
     

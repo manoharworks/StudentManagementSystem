@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+Delete Department
+{% endblock %}
+
+{% block content %}
+
+<div class="card border-danger">
+
+    <div class="card-header bg-danger text-white">
+
+        Delete Department
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+
+            Are you sure you want to delete
+
+            <strong>
+
+                {{ department.name }}
+
+            </strong>?
+
+        </p>
+
+        <p class="text-danger">
+
+            This action cannot be undone.
+
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <button
+                class="btn btn-danger">
+
+                Yes, Delete
+
+            </button>
+
+            <a
+                href="{% url 'departments:department_detail' department.pk %}"
+                class="btn btn-secondary">
+
+                Cancel
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

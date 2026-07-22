@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+Delete Attendance
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-danger text-white">
+
+        <h4>Delete Attendance</h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+
+            Are you sure you want to delete attendance for
+
+            <strong>
+
+                {{ attendance.enrollment.student }}
+
+            </strong>
+
+            on
+
+            <strong>
+
+                {{ attendance.date }}
+
+            </strong>?
+
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <button
+                class="btn btn-danger">
+
+                Delete
+
+            </button>
+
+            <a
+                href="{% url 'attendance:attendance_list' %}"
+                class="btn btn-secondary">
+
+                Cancel
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

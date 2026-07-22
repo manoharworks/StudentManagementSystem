@@ -1,34 +1,68 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Student
-from .forms import StudentForm
+from django.db.models import Q
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+# from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+# from django.contrib.auth.mixins import LoginRequiredMixin
 
+
+from .models import Student
+from .forms import StudentForm
+from departments.models import Department
+
+SORT_OPTIONS = {
+    "name": ("name", "id"),
+    "-name": ("-name", "-id"),
+    "department": ("department__name", "name"),
+    "-department": ("-department__name", "-name"),
+}
+
+DEFAULT_SORT = "name"
 
 @login_required
 def student_list(request):
-    
-    query = request.GET.get("q")
 
-    students = Student.objects.all()
-    
+    search_query = request.GET.get("q", "")
+    selected_department_id = request.GET.get("department", "").strip()
+    sort_key = request.GET.get("sort", DEFAULT_SORT)
 
-    if query:
+    if sort_key not in SORT_OPTIONS:
+        sort_key = DEFAULT_SORT
 
-        students = students.filter(name__icontains=query)
+    queryset = Student.objects.select_related("department")
 
-    paginator = Paginator(students, 10)
+    # Serching
+    if search_query:
+        queryset = queryset.filter(
+            Q(roll_number__icontains=search_query)
+            | Q(name__icontains=search_query)
+            | Q(email__icontains=search_query)
+        )
 
+    # Filtering
+    if selected_department_id:
+        queryset = queryset.filter(department_id=selected_department_id)
+
+    # Sorting
+    queryset = queryset.order_by(*SORT_OPTIONS[sort_key])
+
+    # Pagination
+    paginator = Paginator(queryset, settings.ITEMS_PER_PAGE)
     page_number = request.GET.get("page")
-
     page_obj = paginator.get_page(page_number)
-    
+
     context = {
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "search": search_query,
+        "departments": Department.objects.order_by("name"),
+        "selected_department": selected_department_id,
+        "sort": sort_key,
     }
 
     return render(request, "students/student_list.html", context)
+
 
 @login_required
 def student_create(request):
@@ -38,10 +72,7 @@ def student_create(request):
         if form.is_valid():
             form.save()
 
-            messages.success(
-                request,
-                "Student created successfully."
-            )
+            messages.success(request, "Student created successfully.")
 
             return redirect("students:student_list")
 
@@ -54,6 +85,7 @@ def student_create(request):
 
     return render(request, "students/student_form.html", context)
 
+
 @login_required
 def student_detail(request, pk):
 
@@ -64,6 +96,7 @@ def student_detail(request, pk):
     }
 
     return render(request, "students/student_detail.html", context)
+
 
 @login_required
 def student_update(request, pk):
@@ -78,8 +111,7 @@ def student_update(request, pk):
 
             messages.success(request, "Student detail updated successfully.")
 
-            return redirect("students:student_detail",
-                            pk=student.pk)
+            return redirect("students:student_detail", pk=student.pk)
 
     else:
         form = StudentForm(instance=student)
@@ -91,19 +123,17 @@ def student_update(request, pk):
 
     return render(request, "students/student_form.html", context)
 
+
 @login_required
 def student_delete(request, pk):
 
     student = get_object_or_404(Student, pk=pk)
 
     if request.method == "POST":
-
         student.delete()
 
         messages.success(request, "Student deleted successfully.")
         return redirect("students:student_list")
 
-    context = {
-        "student": student
-    }
+    context = {"student": student}
     return render(request, "students/student_confirm_delete.html", context)

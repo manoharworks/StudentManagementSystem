@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+Delete course
+{% endblock %}
+
+{% block content %}
+
+<div class="card border-danger">
+
+    <div class="card-header bg-danger text-white">
+
+        Delete Course
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+
+            Are you sure you want to delete
+
+            <strong>
+
+                {{ course.title }}
+
+            </strong>?
+
+        </p>
+
+        <p class="text-danger">
+
+            This action cannot be undone.
+
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <button
+                class="btn btn-danger">
+
+                Yes, Delete
+
+            </button>
+
+            <a
+                href="{% url 'courses:course_list' course.pk %}"
+                class="btn btn-secondary">
+
+                Cancel
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

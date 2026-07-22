@@ -40,7 +40,13 @@ INSTALLED_APPS = [
 
 LOCAL_APPS = [
     'students.apps.StudentsConfig',
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    'departments.apps.DepartmentsConfig',
+    'courses.apps.CoursesConfig',
+    'core.apps.CoreConfig',
+    'enrollments.apps.EnrollmentsConfig',
+    'attendance.apps.AttendanceConfig',
+    'grades.apps.GradesConfig',
 ]
 
 INSTALLED_APPS += LOCAL_APPS
@@ -131,3 +137,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Redirecting the user after the logging in or out
 LOGIN_REDIRECT_URL = "students:student_list"
 LOGOUT_REDIRECT_URL = "accounts:login"
+
+ITEMS_PER_PAGE = 10

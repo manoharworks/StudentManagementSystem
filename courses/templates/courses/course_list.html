@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+
+{% block title %}
+Courses
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="mb-0">Courses</h2>
+
+        <small class="text-muted">
+
+            Manage all registered courses
+
+        </small>
+
+    </div>
+
+    <a
+        href="{% url 'courses:course_create' %}"
+        class="btn btn-primary">
+
+        + Add course
+
+    </a>
+
+</div>
+
+<form method="get" class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            <div class="col-lg-5">
+
+                <label class="form-label">
+
+                    Search
+
+                </label>
+
+                <input
+                    type="text"
+                    name="q"
+                    class="form-control"
+                    placeholder="e.g., CSE101, Data Structures..."
+                    value="{{ search_query }}">
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <label class="form-label">
+
+                    Department
+
+                </label>
+
+                <select
+                    name="department"
+                    class="form-select">
+
+                    <option value="">
+
+                        All Departments
+
+                    </option>
+
+                    {% for department in departments %}
+
+                    <option
+
+                        value="{{department.id }}"
+
+                        {% if selected_department_id == department.id|stringformat:"s" %}
+
+                        selected
+
+                        {% endif %}>
+
+                        {{ department.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-3 d-flex align-items-end">
+
+                <button
+                    class="btn btn-primary me-2 w-100">
+
+                    Search
+
+                </button>
+
+                <a
+                    href="{% url 'courses:course_list' %}"
+                    class="btn btn-outline-secondary w-100">
+
+                    Reset
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+<div class="card shadow">
+
+    <div class="card-body p-0">
+
+        <table class="table table-hover align-middle mb-0">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>Code</th>
+
+                    <th> Title </th>
+
+                    <th>
+
+                        <a class="text-white text-decoration-none"
+                            href="?q={{ search_query|urlencode }}&department={{ selected_department_id }}&sort={% if sort_key == 'credit_hours' %}-credit_hours{% else %}credit_hours{% endif %}">
+
+                             Credit Hours
+
+                            {% if sort_key == 'credit_hours' %}
+                                ▲
+                            {% elif sort_key == '-credit_hours' %}
+                                ▼
+                            {% endif %}
+
+                        </a>
+
+                    </th>
+                    
+                    <th>Department</th>
+
+                    <th>
+
+                        <a class="text-white text-decoration-none"
+                            href="?q={{ search_query|urlencode }}&department={{ selected_department_id }}&sort={% if sort_key == 'semester' %}-semester{% else %}semester{% endif %}">
+
+                             Semester
+
+                            {% if sort_key == 'semester' %}
+                                ▲
+                            {% elif sort_key == '-semester' %}
+                                ▼
+                            {% endif %}
+
+                        </a>
+
+                    </th>                    
+
+                    <th class="text-center">
+
+                        Actions
+
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for course in page_obj %}
+
+                <tr>
+
+                    <td> 
+                        {{course.code}} 
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="{% url 'courses:course_detail' course.pk %}"
+                            class="text-decoration-none">
+
+                            {{ course.title }}
+
+                        </a>
+
+                    </td>
+
+                    <td>
+
+                        {{ course.credit_hours }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-primary">
+
+                            {{ course.department.code }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        {{ course.semester }}
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <a
+                            href="{% url 'courses:course_detail' course.pk %}"
+                            class="btn btn-sm btn-info">
+
+                            View
+
+                        </a>
+
+                        <a
+                            href="{% url 'courses:course_update' course.pk %}"
+                            class="btn btn-sm btn-warning">
+
+                            Edit
+
+                        </a>
+
+                        <a
+                            href="{% url 'courses:course_delete' course.pk %}"
+                            class="btn btn-sm btn-danger">
+
+                            Delete
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="text-center py-5">
+
+                        <h5>
+
+                            No courses Found
+
+                        </h5>
+
+                        <p class="text-muted">
+
+                            Try changing the search criteria.
+
+                        </p>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% include "includes/pagination.html" %}
+
+{% endblock %}

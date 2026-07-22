@@ -1,0 +1,110 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Main navigation">
+  <div class="container">
+    <!-- Brand Logo Route -->
+    <a class="navbar-brand" href="{% url 'core:dashboard' %}">University ERP</a>
+
+    <!-- Mobile Toggle Menu Button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Menu Content -->
+    <div class="collapse navbar-collapse" id="navbar">
+      <!-- Primary Navigation Links (With Active State Logic) -->
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.view_name == 'core:dashboard' %}active{% endif %}" 
+             {% if request.resolver_match.view_name == 'core:dashboard' %}aria-current="page"{% endif %} 
+             href="{% url 'core:dashboard' %}">
+            Dashboard
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.view_name == 'students:student_list' %}active{% endif %}" 
+             {% if request.resolver_match.view_name == 'students:student_list' %}aria-current="page"{% endif %} 
+             href="{% url 'students:student_list' %}">
+            Students
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.view_name == 'departments:department_list' %}active{% endif %}" 
+             {% if request.resolver_match.view_name == 'departments:department_list' %}aria-current="page"{% endif %} 
+             href="{% url 'departments:department_list' %}">
+            Departments
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.view_name == 'courses:course_list' %}active{% endif %}" 
+             {% if request.resolver_match.view_name == 'courses:course_list' %}aria-current="page"{% endif %} 
+             href="{% url 'courses:course_list' %}">
+            Courses
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.namespace == 'enrollments' %}active{% endif %}"
+             {% if request.resolver_match.namespace == 'enrollments' %}aria-current="page"{% endif %}
+             href="{% url 'enrollments:enrollment_list' %}">
+            Enrollments
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.namespace == 'attendance' %}active{% endif %}"
+             {% if request.resolver_match.namespace == 'attendance' %}aria-current="page"{% endif %}
+             href="{% url 'attendance:attendance_list' %}">
+            Attendance
+          </a>
+        </li>   
+        
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.namespace == 'grades' %}active{% endif %}"
+             {% if request.resolver_match.namespace == 'grades' %}aria-current="page"{% endif %}
+             href="{% url 'grades:grade_list' %}">
+            Grade
+          </a>
+        </li>    
+      </ul>
+
+      <!-- User Authentication Layout -->
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle {% if request.resolver_match.view_name == 'accounts:profile' %}active{% endif %}" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ user.username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li>
+              <a class="dropdown-item {% if request.resolver_match.view_name == 'accounts:profile' %}active{% endif %}" href="{% url 'accounts:profile' %}">Profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item {% if request.resolver_match.view_name == 'accounts:password_change' %}active{% endif %}" href="{% url 'accounts:password_change' %}">
+                Change Password
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <form action="{% url 'accounts:logout' %}" method="post" class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item">Logout</button>
+              </form>
+            </li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.view_name == 'accounts:login' %}active{% endif %}" href="{% url 'accounts:login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.view_name == 'accounts:signup' %}active{% endif %}" href="{% url 'accounts:signup' %}">
+            Sign Up
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

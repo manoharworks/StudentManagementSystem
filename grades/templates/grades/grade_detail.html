@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}
+Grade Details
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow">
+
+    <div class="card-header">
+
+        <h4>
+
+            Grade Details
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table">
+
+            <tr>
+
+                <th>Student</th>
+
+                <td>{{ grade.enrollment.student }}</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Course</th>
+
+                <td>{{ grade.enrollment.course }}</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Marks Obtained</th>
+
+                <td>{{ grade.marks_obtained }}</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Maximum Marks</th>
+
+                <td>{{ grade.maximum_marks }}</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Percentage</th>
+
+                <td>{{ grade.percentage }}%</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Letter Grade</th>
+
+                <td>{{ grade.letter_grade }}</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Grade Point</th>
+
+                <td>{{ grade.grade_point }}</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Result</th>
+
+                <td>{{ grade.get_result_display }}</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Remarks</th>
+
+                <td>{{ grade.remarks|default:"-" }}</td>
+
+            </tr>
+
+        </table>
+
+        <a
+            href="{% url 'grades:grade_update' grade.pk %}"
+            class="btn btn-warning">
+
+            Edit
+
+        </a>
+
+        <a
+            href="{% url 'grades:grade_list' %}"
+            class="btn btn-secondary">
+
+            Back
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

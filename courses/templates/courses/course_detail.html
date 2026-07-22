@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %} 
+{{ course.title }} 
+{% endblock %} 
+
+{%block content %}
+
+<div class="card shadow">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3>{{ course.title }}</h3>
+
+    <div>
+      <a
+        href="{% url 'courses:course_update' course.pk %}"
+        class="btn btn-warning"
+      >
+        Edit
+      </a>
+
+      <a
+        href="{% url 'courses:course_delete' course.pk %}"
+        class="btn btn-danger"
+      >
+        Delete
+      </a>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <p>
+      <strong>Code:</strong>
+
+      {{ course.code }}
+    </p>
+    <p>
+      <strong>Title:</strong>
+
+      {{ course.title }}
+    </p>
+    <p>
+      <strong>Credit Hours:</strong>
+
+      {{ course.credit_hours }}
+    </p>
+    <p>
+      <strong>Department:</strong>
+
+      {{ course.department }}
+    </p>
+    <p>
+      <strong>Semester:</strong>
+
+      {{ course.semester }}
+    </p>
+    <p>
+      <strong>Description:</strong>
+
+      {{ course.description|default:"No description provided." }}
+    </p>
+
+    <p>
+      <strong>Is Active:</strong>
+
+      {{ course.is_active }}
+    </p>
+    <p>
+      <strong>Created At:</strong>
+
+      {{ course.created_at }}
+    </p>
+    <p>
+      <strong>Updated At:</strong>
+
+      {{ course.updated_at }}
+    </p>
+    <hr />
+
+    <h5>Students</h5>
+
+    <ul class="list-group">
+      {% for student in course.students.all %}
+
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <a href="{% url 'students:student_detail' student.pk %}">
+          {{ student.name }}
+        </a>
+
+        <span class="badge bg-primary"> {{ student.email }} </span>
+      </li>
+
+      {% empty %}
+
+      <li class="list-group-item">No students in this course.</li>
+
+      {% endfor %}
+    </ul>
+
+    <br /><br />
+
+    <a href="{% url 'courses:course_list' %}" class="btn btn-secondary">
+      Back
+    </a>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Dashboard
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">
+
+Dashboard
+
+</h2>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h5>
+
+Students
+
+</h5>
+
+<h1>
+
+{{ total_students }}
+
+</h1>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-6">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h5>
+
+Departments
+
+</h5>
+
+<h1>
+
+{{ total_departments }}
+
+</h1>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card shadow mt-4">
+
+<div class="card-header">
+
+Recent Students
+
+</div>
+
+<div class="card-body">
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Department</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for student in recent_students %}
+
+<tr>
+
+<td>
+
+<a href="{% url 'students:student_detail' student.pk %}">
+
+{{ student }}
+
+</a>
+
+</td>
+
+<td>
+
+{{ student.email }}
+
+</td>
+
+<td>
+
+{{ student.department.code }}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="3">
+
+No students found.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}
