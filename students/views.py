@@ -3,57 +3,55 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-
-
+from .services import StudentService
 
 from .models import Student
 from .forms import StudentForm
 from departments.models import Department
 
-SORT_OPTIONS = {
-    "name": ("name", "id"),
-    "-name": ("-name", "-id"),
-    "department": ("department__name", "name"),
-    "-department": ("-department__name", "-name"),
-}
-
-DEFAULT_SORT = "name"
-
-
 @login_required
 def student_list(request):
 
-    search_query = request.GET.get("q", "")
-    selected_department_id = request.GET.get("department", "").strip()
-    sort_key = request.GET.get("sort", DEFAULT_SORT)
+    search = request.GET.get("q", "")
 
-    if sort_key not in SORT_OPTIONS:
-        sort_key = DEFAULT_SORT
+    department = request.GET.get(
+        "department",
+        "",
+    ).strip()
 
-    queryset = (
-        Student.objects.with_department()
-        .search(search_query)
-        .filter_by_department(selected_department_id)
+    sort = request.GET.get(
+        "sort",
+        DEFAULT_SORT,
     )
-    
-    # Sorting
-    queryset = queryset.order_by(*SORT_OPTIONS[sort_key])
 
-    # Pagination
-    paginator = Paginator(queryset, settings.ITEMS_PER_PAGE)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    queryset = StudentService.get_filtered_students(
+        search=search,
+        department=department,
+        sort=sort,
+    )
+
+    paginator = Paginator(
+        queryset,
+        settings.ITEMS_PER_PAGE,
+    )
+
+    page_obj = paginator.get_page(
+        request.GET.get("page")
+    )
 
     context = {
         "page_obj": page_obj,
-        "search": search_query,
+        "search": search,
         "departments": Department.objects.order_by("name"),
-        "selected_department": selected_department_id,
-        "sort": sort_key,
+        "selected_department": department,
+        "sort": sort,
     }
 
-    return render(request, "students/student_list.html", context)
-
+    return render(
+        request,
+        "students/student_list.html",
+        context,
+    )
 
 @login_required
 def student_create(request):
