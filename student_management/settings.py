@@ -48,6 +48,7 @@ LOCAL_APPS = [
     'attendance.apps.AttendanceConfig',
     'grades.apps.GradesConfig',
     'dashboard.apps.DashboardConfig',
+    'reports.apps.ReportsConfig',
 ]
 
 INSTALLED_APPS += LOCAL_APPS
