@@ -22,13 +22,7 @@ def export_report(
     if config is None:
         raise Http404("Unknown report.")
 
-    queryset = config.model.objects.all()
-
-    if config.select_related:
-
-        queryset = queryset.select_related(
-            *config.select_related
-        )
+    queryset = config.queryset_provider(request)
 
     return ReportService.export(
         export_format=export_format,

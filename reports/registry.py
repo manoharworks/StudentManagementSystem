@@ -10,6 +10,8 @@ from departments.models import Department
 from enrollments.models import Enrollment
 from grades.models import Grade
 from students.models import Student
+from students.services import StudentService
+
 
 from reports.definitions import (
     AttendanceReport,
@@ -21,62 +23,49 @@ from reports.definitions import (
 )
 
 
-@dataclass(frozen=True, slots=True)
+from typing import Callable
+
+@dataclass(frozen=True)
 class ReportConfig:
     """
     Configuration for a report.
     """
 
-    model: type
+    report: type
 
-    report: object
-
-    select_related: tuple[str, ...] = ()
+    queryset_provider: Callable
 
 
 REPORTS = {
+
     "students": ReportConfig(
-        model=Student,
         report=StudentReport,
-        select_related=(
-            "department",
-        ),
+        queryset_provider=StudentService.build_queryset_from_request,
     ),
-    "departments": ReportConfig(
-        model=Department,
-        report=DepartmentReport,
-    ),
-    "courses": ReportConfig(
-        model=Course,
-        report=CourseReport,
-        select_related=(
-            "department",
-        ),
-    ),
-    "enrollments": ReportConfig(
-        model=Enrollment,
-        report=EnrollmentReport,
-        select_related=(
-            "student",
-            "course",
-        ),
-    ),
-    "attendance": ReportConfig(
-        model=Attendance,
-        report=AttendanceReport,
-        select_related=(
-            "enrollment",
-            "enrollment__student",
-            "enrollment__course",
-        ),
-    ),
-    "grades": ReportConfig(
-        model=Grade,
-        report=GradeReport,
-        select_related=(
-            "enrollment",
-            "enrollment__student",
-            "enrollment__course",
-        ),
-    ),
+    
+    # "courses": ReportConfig(
+    #     report_class=CourseReport,
+    #     queryset_provider=CourseService.build_queryset_from_request,
+    # ),
+
+    # "departments": ReportConfig(
+    #     report_class=DepartmentReport,
+    #     queryset_provider=DepartmentService.build_queryset_from_request,
+    # ),
+
+    # "enrollments": ReportConfig(
+    #     report_class=EnrollmentReport,
+    #     queryset_provider=EnrollmentService.build_queryset_from_request,
+    # ),
+
+    # "attendance": ReportConfig(
+    #     report_class=AttendanceReport,
+    #     queryset_provider=AttendanceService.build_queryset_from_request,
+    # ),
+
+    # "grades": ReportConfig(
+    #     report_class=GradeReport,
+    #     queryset_provider=GradeService.build_queryset_from_request,
+    # ),
+    
 }

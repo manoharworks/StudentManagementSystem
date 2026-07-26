@@ -6,287 +6,132 @@ Students
 
 {% block content %}
 
+<!-- Header & Top Action Controls -->
 <div class="d-flex justify-content-between align-items-center mb-4">
-
     <div>
-
         <h2 class="mb-0">Students</h2>
-
-        <small class="text-muted">
-
-            Manage all registered students
-
-        </small>
-
+        <small class="text-muted">Manage all registered students</small>
     </div>
-
-    <a
-        href="{% url 'students:student_create' %}"
-        class="btn btn-primary">
-
-        + Add Student
-
-    </a>
-
+    
+    <!-- Action Alignment Wrapper -->
+    <div class="d-flex gap-2">
+        <a href="{% url 'students:student_create' %}" class="btn btn-primary">
+            + Add Student
+        </a>
+        
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Export
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" href="{% url 'reports:export' 'students' 'csv' %}?{{ request.GET.urlencode }}">
+                        CSV
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'reports:export' 'students' 'excel' %}?{{ request.GET.urlencode }}">
+                        Excel
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'reports:export' 'students' 'pdf' %}?{{ request.GET.urlencode }}">
+                        PDF
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 
+<!-- Search & Filtering Form -->
 <form method="get" class="card shadow-sm mb-4">
-
     <div class="card-body">
-
         <div class="row g-3">
-
             <div class="col-lg-5">
-
-                <label class="form-label">
-
-                    Search
-
-                </label>
-
-                <input
-                    type="text"
-                    name="q"
-                    class="form-control"
-                    placeholder="e.g., CE201, Gautam Yadav, gautam@gamil.com..."
-                    value="{{ search }}">
-
+                <label class="form-label">Search</label>
+                <input type="text" name="q" class="form-control" placeholder="e.g., CE201, Gautam Yadav, gautam@gamil.com..." value="{{ search }}">
             </div>
 
             <div class="col-lg-4">
-
-                <label class="form-label">
-
-                    Department
-
-                </label>
-
-                <select
-                    name="department"
-                    class="form-select">
-
-                    <option value="">
-
-                        All Departments
-
-                    </option>
-
+                <label class="form-label">Department</label>
+                <select name="department" class="form-select">
+                    <option value="">All Departments</option>
                     {% for department in departments %}
-
-                    <option
-
-                        value="{{ department.id }}"
-
-                        {% if selected_department == department.id|stringformat:"s" %}
-
-                        selected
-
-                        {% endif %}>
-
+                    <option value="{{ department.id }}" {% if selected_department == department.id|stringformat:"s" %}selected{% endif %}>
                         {{ department.name }}
-
                     </option>
-
                     {% endfor %}
-
                 </select>
-
             </div>
 
-            <div class="col-lg-3 d-flex align-items-end">
-
-                <button
-                    class="btn btn-primary me-2 w-100">
-
-                    Search
-
-                </button>
-
-                <a
-                    href="{% url 'students:student_list' %}"
-                    class="btn btn-outline-secondary w-100">
-
-                    Reset
-
-                </a>
-
+            <div class="col-lg-3 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+                <a href="{% url 'students:student_list' %}" class="btn btn-outline-secondary w-100">Reset</a>
             </div>
-
         </div>
-
     </div>
-
 </form>
 
+<!-- Data Presentation Table -->
 <div class="card shadow">
-
     <div class="card-body p-0">
-
         <table class="table table-hover align-middle mb-0">
-
             <thead class="table-dark">
-
                 <tr>
-
                     <th>S.N.</th>
-
-                    <th> Roll No. </th>
-
+                    <th>Roll No.</th>
                     <th>
-
-                        <a class="text-white text-decoration-none"
-                            href="?q={{ search|urlencode }}&department={{ selected_department }}&sort={% if sort == 'name' %}-name{% else %}name{% endif %}">
-
-                             Name
-
-                            {% if sort == 'name' %}
-                                ▲
-                            {% elif sort == '-name' %}
-                                ▼
-                            {% endif %}
-
+                        <a class="text-white text-decoration-none" href="?q={{ search|urlencode }}&department={{ selected_department }}&sort={% if sort == 'name' %}-name{% else %}name{% endif %}">
+                            Name
+                            {% if sort == 'name' %}▲{% elif sort == '-name' %}▼{% endif %}
                         </a>
-
                     </th>
-                    
                     <th>Email</th>
-
                     <th>
-
-                        <a
-                            class="text-white text-decoration-none"
-                            href="?q={{ search|urlencode }}&department={{ selected_department }}&sort={% if sort == 'department' %}-department{% else %}department{% endif %}">
-                        
+                        <a class="text-white text-decoration-none" href="?q={{ search|urlencode }}&department={{ selected_department }}&sort={% if sort == 'department' %}-department{% else %}department{% endif %}">
                             Department
-
-                            {% if sort == 'department' %}
-                                ▲
-                            {% elif sort == '-department' %}
-                                ▼
-                            {% endif %}
-
+                            {% if sort == 'department' %}▲{% elif sort == '-department' %}▼{% endif %}
                         </a>
-
                     </th>
-
-
-
-                    <th class="text-center">
-
-                        Actions
-
-                    </th>
-
+                    <th class="text-center">Actions</th>
                 </tr>
-
             </thead>
-
             <tbody>
-
                 {% for student in page_obj %}
-
                 <tr>
-
+                    <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+                    <td>{{ student.roll_number }}</td>
                     <td>
-
-                      {{ page_obj.start_index|add:forloop.counter0 }}
-
-                    </td>
-
-                    <td> 
-                        {{student.roll_number}} 
-                    </td>
-
-                    <td>
-
-                        <a
-                            href="{% url 'students:student_detail' student.pk %}"
-                            class="text-decoration-none">
-
+                        <a href="{% url 'students:student_detail' student.pk %}" class="text-decoration-none">
                             {{ student.name }}
-
                         </a>
-
                     </td>
-
+                    <td>{{ student.email }}</td>
                     <td>
-
-                        {{ student.email }}
-
-                    </td>
-
-                    <td>
-
                         <span class="badge bg-primary">
-
                             {{ student.department.code }}
-
                         </span>
-
                     </td>
-
                     <td class="text-center">
-
-                        <a
-                            href="{% url 'students:student_detail' student.pk %}"
-                            class="btn btn-sm btn-info">
-
-                            View
-
-                        </a>
-
-                        <a
-                            href="{% url 'students:student_update' student.pk %}"
-                            class="btn btn-sm btn-warning">
-
-                            Edit
-
-                        </a>
-
-                        <a
-                            href="{% url 'students:student_delete' student.pk %}"
-                            class="btn btn-sm btn-danger">
-
-                            Delete
-
-                        </a>
-
+                        <div class="btn-group btn-group-sm">
+                            <a href="{% url 'students:student_detail' student.pk %}" class="btn btn-info">View</a>
+                            <a href="{% url 'students:student_update' student.pk %}" class="btn btn-warning">Edit</a>
+                            <a href="{% url 'students:student_delete' student.pk %}" class="btn btn-danger">Delete</a>
+                        </div>
                     </td>
-
                 </tr>
-
                 {% empty %}
-
                 <tr>
-
-                    <td
-                        colspan="6"
-                        class="text-center py-5">
-
-                        <h5>
-
-                            No Students Found
-
-                        </h5>
-
-                        <p class="text-muted">
-
-                            Try changing the search criteria.
-
-                        </p>
-
+                    <td colspan="6" class="text-center py-5">
+                        <h5>No Students Found</h5>
+                        <p class="text-muted mb-0">Try changing the search criteria.</p>
                     </td>
-
                 </tr>
-
                 {% endfor %}
-
             </tbody>
-
         </table>
-
     </div>
-
 </div>
 
 {% include "includes/pagination.html" %}

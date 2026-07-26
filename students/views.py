@@ -3,8 +3,8 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from .services import StudentService
 
+from .services import StudentService, DEFAULT_SORT
 from .models import Student
 from .forms import StudentForm
 from departments.models import Department
@@ -12,22 +12,8 @@ from departments.models import Department
 @login_required
 def student_list(request):
 
-    search = request.GET.get("q", "")
-
-    department = request.GET.get(
-        "department",
-        "",
-    ).strip()
-
-    sort = request.GET.get(
-        "sort",
-        DEFAULT_SORT,
-    )
-
-    queryset = StudentService.get_filtered_students(
-        search=search,
-        department=department,
-        sort=sort,
+    queryset = StudentService.build_queryset_from_request(
+        request
     )
 
     paginator = Paginator(
@@ -41,10 +27,16 @@ def student_list(request):
 
     context = {
         "page_obj": page_obj,
-        "search": search,
+        "search": request.GET.get("q", ""),
         "departments": Department.objects.order_by("name"),
-        "selected_department": department,
-        "sort": sort,
+        "selected_department": request.GET.get(
+            "department",
+            "",
+        ),
+        "sort": request.GET.get(
+            "sort",
+            DEFAULT_SORT,
+        ),
     }
 
     return render(
