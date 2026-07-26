@@ -1,8 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Main navigation">
   <div class="container">
-    <!-- Brand Logo Route -->
-    <a class="navbar-brand" href="{% url 'core:dashboard' %}">University ERP</a>
-
     <!-- Mobile Toggle Menu Button -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -10,15 +7,15 @@
 
     <!-- Collapsible Menu Content -->
     <div class="collapse navbar-collapse" id="navbar">
-      <!-- Primary Navigation Links (With Active State Logic) -->
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.view_name == 'core:dashboard' %}active{% endif %}" 
-             {% if request.resolver_match.view_name == 'core:dashboard' %}aria-current="page"{% endif %} 
-             href="{% url 'core:dashboard' %}">
+          <a class="nav-link {% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}"
+             {% if request.resolver_match.namespace == 'dashboard' %}aria-current="page"{% endif %}
+             href="{% url 'dashboard:dashboard' %}">
             Dashboard
           </a>
         </li>
+
 
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.view_name == 'students:student_list' %}active{% endif %}" 

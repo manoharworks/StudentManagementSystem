@@ -47,6 +47,7 @@ LOCAL_APPS = [
     'enrollments.apps.EnrollmentsConfig',
     'attendance.apps.AttendanceConfig',
     'grades.apps.GradesConfig',
+    'dashboard.apps.DashboardConfig',
 ]
 
 INSTALLED_APPS += LOCAL_APPS
@@ -135,7 +136,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirecting the user after the logging in or out
-LOGIN_REDIRECT_URL = "students:student_list"
+LOGIN_URL = "accounts:login"
+
+LOGIN_REDIRECT_URL = "dashboard:dashboard"
+
 LOGOUT_REDIRECT_URL = "accounts:login"
 
 ITEMS_PER_PAGE = 10

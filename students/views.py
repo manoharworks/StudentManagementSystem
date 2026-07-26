@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
@@ -21,6 +20,7 @@ SORT_OPTIONS = {
 
 DEFAULT_SORT = "name"
 
+
 @login_required
 def student_list(request):
 
@@ -31,20 +31,12 @@ def student_list(request):
     if sort_key not in SORT_OPTIONS:
         sort_key = DEFAULT_SORT
 
-    queryset = Student.objects.select_related("department")
-
-    # Serching
-    if search_query:
-        queryset = queryset.filter(
-            Q(roll_number__icontains=search_query)
-            | Q(name__icontains=search_query)
-            | Q(email__icontains=search_query)
-        )
-
-    # Filtering
-    if selected_department_id:
-        queryset = queryset.filter(department_id=selected_department_id)
-
+    queryset = (
+        Student.objects.with_department()
+        .search(search_query)
+        .filter_by_department(selected_department_id)
+    )
+    
     # Sorting
     queryset = queryset.order_by(*SORT_OPTIONS[sort_key])
 
@@ -91,9 +83,7 @@ def student_detail(request, pk):
 
     student = get_object_or_404(Student, pk=pk)
 
-    context = {
-        "student": student
-    }
+    context = {"student": student}
 
     return render(request, "students/student_detail.html", context)
 

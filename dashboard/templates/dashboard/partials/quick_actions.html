@@ -1,0 +1,63 @@
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+
+        <strong>
+
+            Quick Actions
+
+        </strong>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="d-flex flex-wrap gap-2">
+
+            <a href="{% url 'students:student_create' %}"
+               class="btn btn-primary">
+
+                Add Student
+
+            </a>
+
+            <a href="{% url 'departments:department_create' %}"
+               class="btn btn-success">
+
+                Add Department
+
+            </a>
+
+            <a href="{% url 'courses:course_create' %}"
+               class="btn btn-warning">
+
+                Add Course
+
+            </a>
+
+            <a href="{% url 'enrollments:enrollment_create' %}"
+               class="btn btn-info">
+
+                Add Enrollment
+
+            </a>
+
+            <a href="{% url 'attendance:attendance_create' %}"
+               class="btn btn-secondary">
+
+                Record Attendance
+
+            </a>
+
+            <a href="{% url 'grades:grade_create' %}"
+               class="btn btn-dark">
+
+                Add Grade
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

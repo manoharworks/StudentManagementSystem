@@ -1,9 +1,9 @@
 from django.db import models
 from departments.models import Department
 
-from core.models import TimeStampedModel
+from core.mixins import TimeStampedMixin
 
-class Course(TimeStampedModel):
+class Course(TimeStampedMixin):
     
     SEMESTER_CHOICES = [
         (1, "Semester 1"),

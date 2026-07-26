@@ -1,8 +1,8 @@
 from django.db import models
 
-from core.models import TimeStampedModel
+from core.mixins import TimeStampedMixin
 
-class Department(TimeStampedModel):
+class Department(TimeStampedMixin):
     name = models.CharField(max_length=100, unique=True)
     code = models.CharField(max_length=10, unique=True)
     description = models.TextField(blank=True)

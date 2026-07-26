@@ -1,0 +1,125 @@
+<div class="row g-4 mb-4">
+
+    <div class="col-xl-2 col-md-4 col-sm-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Students
+                </h6>
+
+                <h2>
+                    {{ total_students }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 col-sm-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Departments
+                </h6>
+
+                <h2>
+                    {{ total_departments }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 col-sm-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Courses
+                </h6>
+
+                <h2>
+                    {{ total_courses }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 col-sm-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Enrollments
+                </h6>
+
+                <h2>
+                    {{ total_enrollments }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 col-sm-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Attendance
+                </h6>
+
+                <h2>
+                    {{ attendance_percentage }}%
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 col-sm-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Average GPA
+                </h6>
+
+                <h2>
+
+                    {{ average_gpa|default:"0.00"|floatformat:2 }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

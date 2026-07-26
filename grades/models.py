@@ -3,10 +3,10 @@ from django.core.exceptions import ValidationError
 from decimal import Decimal
 
 from enrollments.models import Enrollment
-from core.models import TimeStampedModel
+from core.mixins import TimeStampedMixin
 
 
-class Grade(TimeStampedModel):
+class Grade(TimeStampedMixin):
     class Result(models.TextChoices):
         PASS = "PASS", "Pass"
         FAIL = "FAIL", "Fail"

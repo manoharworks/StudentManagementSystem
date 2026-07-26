@@ -1,9 +1,9 @@
 from django.db import models
 from enrollments.models import Enrollment
 
-from core.models import TimeStampedModel
+from core.mixins import TimeStampedMixin
 
-class Attendance(TimeStampedModel):
+class Attendance(TimeStampedMixin):
 
     class Status(models.TextChoices):
         PRESENT = "PRESENT", "Present"
