@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, ProfileUpdateForm
 from .services import AccountService
 from .models import User
 
@@ -33,13 +33,6 @@ class SignupView(CreateView):
         )
 
         return redirect(self.get_success_url())
-
-
-@login_required
-def profile(request):
-    return render(request, "accounts/profile.html")
-
-
 class UserLoginView(LoginView):
     template_name = "accounts/login.html"
     authentication_form = LoginForm
@@ -51,3 +44,44 @@ class UserLoginView(LoginView):
 
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy("accounts:login")
+
+class ProfileView(
+    LoginRequiredMixin,
+    DetailView,
+):
+
+    model = User
+
+    template_name = "accounts/profile.html"
+
+    context_object_name = "user_object"
+
+    def get_object(self):
+        return self.request.user
+    
+class ProfileUpdateView(
+    LoginRequiredMixin,
+    UpdateView,
+):
+
+    model = User
+
+    form_class = ProfileUpdateForm
+
+    template_name = "accounts/profile_update.html"
+
+    success_url = reverse_lazy(
+        "accounts:profile"
+    )
+
+    def get_object(self):
+        return self.request.user
+
+    def form_valid(self, form):
+
+        messages.success(
+            self.request,
+            "Profile updated successfully."
+        )
+
+        return super().form_valid(form)

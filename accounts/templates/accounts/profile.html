@@ -2,42 +2,34 @@
 
 {% block content %}
 
-<div class="card">
+<h2>My Profile</h2>
 
-<div class="card-header">
+<hr>
 
-<h3>Profile</h3>
+<p><strong>Username:</strong> {{ user_object.username }}</p>
 
-</div>
+<p><strong>First Name:</strong> {{ user_object.first_name }}</p>
 
-<div class="card-body">
+<p><strong>Last Name:</strong> {{ user_object.last_name }}</p>
 
-<p>
+<p><strong>Email:</strong> {{ user_object.email }}</p>
 
-<strong>Username:</strong>
+<p><strong>Phone:</strong> {{ user_object.phone_number }}</p>
 
-{{ user.username }}
+{% if user_object.profile_picture %}
+    <img
+        src="{{ user_object.profile_picture.url }}"
+        width="150"
+    >
+{% endif %}
 
-</p>
+<a
+    href="{% url 'accounts:profile_update' %}"
+    class="btn btn-primary"
+>
 
-<p>
+Edit Profile
 
-<strong>Email:</strong>
-
-{{ user.email }}
-
-</p>
-
-<p>
-
-<strong>Date Joined:</strong>
-
-{{ user.date_joined }}
-
-</p>
-
-</div>
-
-</div>
+</a>
 
 {% endblock %}

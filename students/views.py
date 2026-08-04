@@ -9,7 +9,7 @@ from .models import Student
 from .forms import StudentForm
 from departments.models import Department
 
-@permission_required("view_student", raise_exception=True)
+
 @login_required
 def student_list(request):
 
