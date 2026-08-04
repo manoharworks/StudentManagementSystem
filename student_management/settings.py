@@ -136,6 +136,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = "accounts.User"
+
 # Redirecting the user after the logging in or out
 LOGIN_URL = "accounts:login"
 
@@ -144,3 +146,4 @@ LOGIN_REDIRECT_URL = "dashboard:dashboard"
 LOGOUT_REDIRECT_URL = "accounts:login"
 
 ITEMS_PER_PAGE = 10
+

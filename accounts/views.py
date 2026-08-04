@@ -1,67 +1,53 @@
-"""
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import messages
-
-def custom_login_view(request):
-    # 1. If the user is already logged in, send them straight to the student list
-    if request.user.is_authenticated:
-        return redirect('students:student_list')
-
-    if request.method == "POST":
-        # 2. Bind the submitted POST data to Django's built-in login form
-        form = AuthenticationForm(request, data=request.POST)
-        
-        if form.is_valid():
-            # 3. Extract the cleaned username and password
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            
-            # 4. Check if the credentials match a record in the database
-            user = authenticate(request, username=username, password=password)
-            
-            if user is not None:
-                # 5. Create the login session cookie in the user's browser
-                login(request, user)
-                messages.success(request, f"Welcome back, {username}!")
-                return redirect('students:student_list')
-        
-        # If form is invalid or authentication fails
-        messages.error(request, "Invalid username or password.")
-    else:
-        # 6. If it's a GET request, initialize a blank form
-        form = AuthenticationForm()
-
-    return render(request, 'accounts/login.html', {'form': form})
-"""
-
-
-from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
+from .forms import SignupForm, LoginForm
+from .services import AccountService
+from .models import User
 
 
-def signup(request):
-    if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
-        
-        if form.is_valid():
-            form.save()
-            
-            messages.success(request, "Account created Successfully")
-            
-            return redirect("accounts:login")
-        
-    else:
-        form = CustomUserCreationForm()
-        
-    context = {"form" : form}    
-    
-    return render(request, "accounts/signup.html", context )         
+class SignupView(CreateView):
+    model = User
+    form_class = SignupForm
+    template_name = "accounts/signup.html"
+    success_url = reverse_lazy("accounts:login")
+
+    # Overrriding the form_valid to use the services
+    def form_valid(self, form):
+
+        self.object = AccountService.register_user(
+            username=form.cleaned_data["username"],
+            password=form.cleaned_data["password1"],
+            email=form.cleaned_data["email"],
+            first_name=form.cleaned_data["first_name"],
+            last_name=form.cleaned_data["last_name"],
+        )
+
+        messages.success(
+            self.request,
+            "Account created successfully.",
+        )
+
+        return redirect(self.get_success_url())
+
 
 @login_required
-def profile(request): 
+def profile(request):
     return render(request, "accounts/profile.html")
 
+
+class UserLoginView(LoginView):
+    template_name = "accounts/login.html"
+    authentication_form = LoginForm
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return str(reverse_lazy("dashboard:dashboard"))
+
+
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy("accounts:login")

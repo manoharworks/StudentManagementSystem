@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.conf import settings
 
 from .services import StudentService, DEFAULT_SORT
@@ -9,6 +9,7 @@ from .models import Student
 from .forms import StudentForm
 from departments.models import Department
 
+@permission_required("view_student", raise_exception=True)
 @login_required
 def student_list(request):
 
