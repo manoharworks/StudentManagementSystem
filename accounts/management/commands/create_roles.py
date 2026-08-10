@@ -1,3 +1,7 @@
+# This is the code to create groups and assign permssions to each.
+# This entire operation can be done manually in the Django Admin interface
+# without writing or running this management command. But due to some major cons this way is preferred.
+
 from django.contrib.auth.models import Group, Permission
 from django.core.management.base import BaseCommand
 

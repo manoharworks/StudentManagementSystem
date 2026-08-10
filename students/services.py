@@ -11,9 +11,8 @@ DEFAULT_SORT = "name"
 
 
 class StudentService:
-    """
-    Business logic for Student.
-    """
+    
+    # Business logic for Student.
 
     @staticmethod
     def get_filtered_students(
