@@ -1,6 +1,6 @@
 # Student Management System
 
-Hi — I'm Manohar. I built this Student Management System as a small Django project to manage students, courses, enrollments, attendance, grades and basic reports.
+Hi — I'm Manohar. I built this Student Management System as a Django project to manage students, courses, enrollments, attendance, grades and basic reports.
 
 This repo contains the Django app modules I used while building it:
 
