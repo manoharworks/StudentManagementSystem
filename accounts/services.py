@@ -57,5 +57,3 @@ class AccountService:
         user.groups.add(student_group)
 
         return user
-
-    
