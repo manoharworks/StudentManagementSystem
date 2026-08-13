@@ -68,6 +68,11 @@ urlpatterns = [
         "api/",
         include("students.api.urls"),
     ),
+    
+    path(
+        "api/auth/",
+        include("accounts.api_urls"),
+    ),
 ]
 
 
