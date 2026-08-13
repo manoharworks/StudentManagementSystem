@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -9,7 +9,8 @@ from students.models import Student
 from .permissions import ERPModelPermissions
 
 
-class StudentListCreateAPIView(ListCreateAPIView):
+class StudentViewSet(ModelViewSet):
+    
     queryset = Student.objects.all()
 
     serializer_class = StudentSerializer
@@ -48,12 +49,3 @@ class StudentListCreateAPIView(ListCreateAPIView):
     ]
 
 
-class StudentDetailAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Student.objects.all()
-
-    serializer_class = StudentSerializer
-
-    permission_classes = [
-        IsAuthenticated,
-        ERPModelPermissions,
-    ]
